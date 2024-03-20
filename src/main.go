@@ -12,6 +12,7 @@ import (
 	_ "github.com/daksh-pareek/paperman/src/config"
 	"github.com/daksh-pareek/paperman/src/repositories"
 	"github.com/daksh-pareek/paperman/src/routes/api"
+	"github.com/daksh-pareek/paperman/src/utils/applogger"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -34,19 +35,19 @@ func main() {
 		signal.Notify(quit, syscall.SIGINT)
 
 		<-quit
-		fmt.Println("Server is shutting down...")
+		applogger.Info("Server is shutting down...")
 
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
 
 		if err := app.ShutdownWithContext(ctx); err != nil {
-			fmt.Printf("Server forced to shutdown: %v\n", err)
+			applogger.Warn("Server forced to shutdown: %v", err)
 		}
 	}()
 
 	// Start server
 	err := app.Listen(fmt.Sprintf(":%s", config.Port))
 	if err != nil {
-		fmt.Printf("Error starting server: %v\n", err)
+		applogger.Error("Error starting server: %v", err)
 	}
 }
