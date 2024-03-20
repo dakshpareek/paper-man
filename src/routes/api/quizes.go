@@ -1,7 +1,10 @@
 package api
 
 import (
+	"strconv"
+
 	"github.com/daksh-pareek/paperman/src/controllers"
+	"github.com/daksh-pareek/paperman/src/dtos"
 	"github.com/daksh-pareek/paperman/src/repositories"
 	"github.com/gofiber/fiber/v2"
 )
@@ -17,5 +20,16 @@ func QuizzesRoutes(dbInstance repositories.QuizRepository) func(router fiber.Rou
 }
 
 func GetQuiz(ctx *fiber.Ctx) error {
-	return ctx.Status(fiber.StatusOK).JSON("Dummy Quiz Data")
+	quizId := ctx.Params("id")
+	// convert string to uint64
+	quizIdUint, err := strconv.ParseUint(quizId, 10, 64)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(dtos.CreateErrorResponse(fiber.StatusBadRequest, "Error parsing quiz id"))
+	}
+
+	quiz, err := quizController.GetQuiz(quizIdUint)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(dtos.CreateErrorResponse(fiber.StatusBadRequest, "Error getting quiz"))
+	}
+	return ctx.Status(fiber.StatusOK).JSON(quiz)
 }
