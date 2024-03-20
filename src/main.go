@@ -13,12 +13,14 @@ import (
 	"github.com/daksh-pareek/paperman/src/repositories"
 	"github.com/daksh-pareek/paperman/src/routes/api"
 	"github.com/daksh-pareek/paperman/src/utils/applogger"
+	"github.com/daksh-pareek/paperman/src/utils/logger"
 	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
 	// Create server instance
 	app := fiber.New()
+	app.Use(logger.NewLogger())
 	// Grouping routes
 	apiV1 := app.Group("/api/v1")
 
