@@ -25,8 +25,6 @@ func (qc *QuizController) GetQuiz(quizId uint64) (*dtos.QuizDTO, error) {
 }
 
 // List all the methods I should be having for quizzes
-// CreateQuiz
-// GetQuiz
 // UpdateQuiz
 // DeleteQuiz
 // ListQuizzes
