@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/daksh-pareek/paperman/src/controllers"
+	_ "github.com/daksh-pareek/paperman/src/docs"
 	"github.com/daksh-pareek/paperman/src/dtos"
 	"github.com/daksh-pareek/paperman/src/repositories"
 	"github.com/daksh-pareek/paperman/src/server/parsers"
@@ -22,6 +23,16 @@ func QuizzesRoutes(dbInstance repositories.QuizRepository) func(router fiber.Rou
 	}
 }
 
+// GetQuiz
+//
+//	@Summary	Get a quiz by id
+//	@Tags		Quizzes
+//	@Accept		json
+//	@Produce	json
+//	@Param		id	path		string	true	"Quiz ID"
+//	@Success	200	{object}	dtos.QuizDTO
+//	@Failure	400	{object}	dtos.ErrorResponse
+//	@Router		/quiz/{id} [get]
 func GetQuiz(ctx *fiber.Ctx) error {
 	quizId := ctx.Params("id")
 	// convert string to uint64
@@ -37,6 +48,16 @@ func GetQuiz(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusOK).JSON(quiz)
 }
 
+// CreateQuiz
+//
+// @Summary	Create a quiz
+// @Tags		Quizzes
+// @Accept		json
+// @Produce	json
+// @Param		quiz	body		dtos.QuizDTO	true	"Quiz object"
+// @Success	200	{object}	dtos.QuizDTO
+// @Failure	400	{object}	dtos.ErrorResponse
+// @Router		/quiz [post]
 func CreateQuiz(ctx *fiber.Ctx) error {
 	// pares request body to QuizDTO
 	parsedBody, parseError := parsers.ParseBody[dtos.QuizDTO](ctx)

@@ -1,0 +1,112 @@
+basePath: /api/v1
+definitions:
+  dtos.ErrorResponse:
+    properties:
+      message:
+        example: Something went wrong
+        type: string
+      status:
+        example: 400
+        type: integer
+    type: object
+  dtos.Option:
+    properties:
+      id:
+        type: integer
+      text:
+        type: string
+    type: object
+  dtos.QuestionDTO:
+    properties:
+      correctAnswer:
+        $ref: '#/definitions/dtos.Option'
+      id:
+        type: integer
+      options:
+        items:
+          $ref: '#/definitions/dtos.Option'
+        type: array
+      text:
+        type: string
+      type:
+        $ref: '#/definitions/dtos.QuestionType'
+    type: object
+  dtos.QuestionType:
+    enum:
+    - multipleChoice
+    type: string
+    x-enum-varnames:
+    - MultipleChoice
+  dtos.QuizDTO:
+    properties:
+      creatorId:
+        type: integer
+      id:
+        type: integer
+      questions:
+        items:
+          $ref: '#/definitions/dtos.QuestionDTO'
+        type: array
+      title:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: This is the API documentation for Paperman
+  title: Paperman API
+  version: "1"
+paths:
+  /quiz:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Quiz object
+        in: body
+        name: quiz
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.QuizDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.QuizDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create a quiz
+      tags:
+      - Quizzes
+  /quiz/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Quiz ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.QuizDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get a quiz by id
+      tags:
+      - Quizzes
+schemes:
+- http
+- https
+swagger: "2.0"

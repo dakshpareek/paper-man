@@ -23,3 +23,8 @@ go build
 ```bash
 ./project
 ```
+
+### Swagger Documentation
+```bash
+swag init
+```
